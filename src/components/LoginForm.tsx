@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form"
 import { Input } from "./ui/input"
 import { login } from "@/app/auth/login/actions"
-import { useSearchParams } from "next/navigation"
 import { useState } from "react"
 
 const loginSchema = z.object({
@@ -18,10 +17,8 @@ const loginSchema = z.object({
         message: "Password length should be between 4-12."
     })
 })
-export default function LoginForm () {
+export default function LoginForm ({redirectTo} : {redirectTo: string}) {
     const [loading, setLoading] = useState(false);
-
-    const redirectTo = useSearchParams().get('redirectTo') || '/';
 
     const loginForm = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
@@ -38,9 +35,6 @@ export default function LoginForm () {
                 ...value,
                 redirectTo
             });
-        } catch (error) {
-            // error block will get redirected to error page.
-            console.log(error);
         } finally {
             setLoading(false);
         }

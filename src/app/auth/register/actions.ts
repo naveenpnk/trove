@@ -15,12 +15,10 @@ export async function register(formData: RegisterFormType) {
     email: formData.email as string,
     password: formData.password as string,
   }
-  console.log("sign up ",formData, data);
   
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {
-    console.log("errorMsg", error)
     redirect('/error')
   }
 
