@@ -8,13 +8,14 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form"
 import { Input } from "./ui/input"
-import { login } from "@/app/auth/login/actions"
+import { login, resetPassword } from "@/app/auth/login/actions"
 import { useState } from "react"
+import { toast } from "sonner"
 
 const loginSchema = z.object({
     email: z.email(),
     password: z.string().min(4).max(12, {
-        message: "Password length should be between 4-12."
+        message: "Password length must be between 4-12 digits."
     })
 })
 export default function LoginForm ({redirectTo} : {redirectTo: string}) {
@@ -37,6 +38,20 @@ export default function LoginForm ({redirectTo} : {redirectTo: string}) {
             });
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function handleForgotPassword(data: Pick<z.infer<typeof loginSchema>, 'email'>) {
+        try {
+            const response = await resetPassword(data);
+            if (response.responseCode) {
+                toast.success("Recovery email sent successfully")
+            } else {
+                toast.error("Email authendication was failed");
+            }
+        } catch (error) {
+            console.log("login:", error);
+            toast.error("Email authendication was failed");
         }
     }
     
@@ -82,9 +97,16 @@ export default function LoginForm ({redirectTo} : {redirectTo: string}) {
                         }
                         Login
                     </Button>
+                    <div className="w-full flex justify-end">
+                    <Button 
+                        type="button" 
+                        variant="link" 
+                        onClick={() => handleForgotPassword(loginForm.getValues())} 
+                        className="underline cursor-pointer">Forget password?</Button>
+                    </div>
                 </form>
             </Form>
-            <div className="border-b-2 my-6 w-full relative flex justify-center items-center">
+            <div className="border-b-2 my-5 w-full relative flex justify-center items-center">
                 <span className="absolute px-2 z-10 bg-neutral-50">Or</span>
             </div>
             <Button variant="outline" className="w-full cursor-pointer">

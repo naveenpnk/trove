@@ -3,10 +3,10 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { RegisterFormType } from '@/types/formData'
+import { RegisterFormData } from '@/types/formData'
 
 
-export async function register(formData: RegisterFormType) {
+export async function register(formData: RegisterFormData) {
   const supabase = await createClient()
   
   // type-casting here for convenience
@@ -19,7 +19,7 @@ export async function register(formData: RegisterFormType) {
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {
-    redirect('/error')
+    redirect('/auth/not-found')
   }
 
   revalidatePath('/', 'layout')

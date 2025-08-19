@@ -1,4 +1,5 @@
 import LoginForm from "@/components/LoginForm";
+import { Toaster } from "sonner";
 
 export default async function LoginPage (
     props : { searchParams: Promise<{ redirectTo?: string}>}
@@ -8,6 +9,7 @@ export default async function LoginPage (
     return (
         <div className="flex justify-center w-full">
             <LoginForm redirectTo={ redirectTo }/>
+            <Toaster richColors />
         </div>
     )
 }
