@@ -109,7 +109,7 @@ export default function RegisterForm () {
                 </form>
             </Form>
             <div className="border-b-2 my-6 w-full relative flex justify-center items-center">
-                <span className="absolute px-2 z-10 bg-neutral-50">Or</span>
+                <span className="absolute px-2 z-10">Or</span>
             </div>
             <Button variant="outline" className="w-full cursor-pointer">
                 <GitHub />
